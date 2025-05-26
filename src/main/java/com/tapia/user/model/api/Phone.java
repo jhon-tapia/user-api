@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class Phone {
 
   @NotBlank(message = "El numero de telefono es obligatorio")
-  @Pattern(regexp = "^[0-9]{10}$", message = "Ingrese un numero de telefono valido")
+  @Pattern(regexp = "^[0-9]{6,15}$", message = "Ingrese un numero de telefono valido")
   private String number;
 
   @NotBlank(message = "El código de ciudad es obligatorio")

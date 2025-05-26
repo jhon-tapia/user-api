@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -29,6 +30,7 @@ public class UserCreateRequest {
   @Size(min = 8, max = 20, message = "El password debe tener entre 8 y 20 caracteres")
   private String password;
 
+  @Valid
   @NotEmpty(message = "Debe incluir al menos un teléfono")
   private List<Phone> phones;
 
