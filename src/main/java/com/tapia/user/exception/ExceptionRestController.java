@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.support.WebExchangeBindException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,15 @@ public class ExceptionRestController {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionDetail.builder()
                         .message(errors.toString())
+                        .build());
+    }
+
+    @ExceptionHandler(WebExchangeBindException.class)
+    public ResponseEntity<ExceptionDetail> handleUserManagerException(WebExchangeBindException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionDetail.builder()
+                        .message(ex.getMessage())
                         .build());
     }
 
