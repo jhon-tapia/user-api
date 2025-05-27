@@ -45,7 +45,7 @@ public class UserControllerTest {
         UserDto userDto = UserDto.builder()
                 .name("Juan Rodriguez")
                 .email("juan@rodriguez.org")
-                .password("test_password")
+                .password("password$AB123")
                 .token("c3c79171-1c98-4374-8791-711c98c374a0")
                 .phones(List.of(PhoneDto.builder()
                         .citycode("01")
@@ -57,7 +57,7 @@ public class UserControllerTest {
         UserCreateResponse response = new UserCreateResponse();
         response.setName("Juan Rodriguez");
         response.setEmail("juan@rodriguez.org");
-        response.setPassword("test_password");
+        response.setPassword("password$AB123");
         response.setToken("c3c79171-1c98-4374-8791-711c98c374a0");
         response.setPhones(Collections.singletonList(new Phone("123456789", "01", "51")));
 
@@ -71,7 +71,7 @@ public class UserControllerTest {
                 .bodyValue("{\n" +
                         "  \"name\": \"Juan Rodriguez\",\n" +
                         "  \"email\": \"juan@rodriguez.org\",\n" +
-                        "  \"password\": \"test_password\",\n" +
+                        "  \"password\": \"password$AB123\",\n" +
                         "  \"phones\": [\n" +
                         "    {\n" +
                         "      \"number\": \"123456789\",\n" +
@@ -119,7 +119,7 @@ public class UserControllerTest {
                 .bodyValue("{\n" +
                         "  \"name\": \"Juan Ramirez\",\n" +
                         "  \"email\": \"juan@mail.com\",\n" +
-                        "  \"password\": \"password123\",\n" +
+                        "  \"password\": \"password$AB123\",\n" +
                         "  \"phones\": [\n" +
                         "    {\n" +
                         "      \"number\": \"123456789\",\n" +
