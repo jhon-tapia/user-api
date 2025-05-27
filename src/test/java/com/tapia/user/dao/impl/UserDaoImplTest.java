@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.verify;
@@ -123,36 +124,48 @@ class UserDaoImplTest {
                 .build();
 
         when(userDaoMapper.toUserEntity(any(UserDto.class))).thenReturn(userEntity);
-        when(userRepository.save(any())).thenThrow(DataIntegrityViolationException.class);
+        when(userRepository.save(any())).thenThrow(new DataIntegrityViolationException("DataIntegrityViolationException"));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             userDaoImpl.createUser(inputDto).blockingGet();
         });
 
-        Assert.assertThat(exception.getMessage(), org.hamcrest.CoreMatchers.containsString("El correo ya fue registrado"));
+        assertTrue(exception.getMessage().contains("correo ya fue registrado"));
         verify(userDaoMapper).toUserEntity(inputDto);
         verify(userRepository).save(userEntity);
     }
 
     @Test
     void testCreateUserUnexpectedError() {
-
         UserDto inputDto = UserDto.builder()
                 .name("Juan Rodriguez")
                 .email("juan@rodriguez.org")
                 .password("test_password")
+                .phones(List.of(PhoneDto.builder()
+                        .citycode("1")
+                        .contrycode("51")
+                        .number("123456789")
+                        .build()))
                 .build();
-        UserEntity userEntity = new UserEntity();
-        RuntimeException unexpectedException = new RuntimeException("Unexpected error");
+        UserEntity userEntity = UserEntity.builder()
+                .name("Juan Rodriguez")
+                .email("juan@rodriguez.org")
+                .password("test_password")
+                .phones(List.of(PhoneEntity.builder()
+                        .citycode("1")
+                        .contrycode("51")
+                        .number("123456789")
+                        .build()))
+                .build();
 
         when(userDaoMapper.toUserEntity(any(UserDto.class))).thenReturn(userEntity);
-        when(userRepository.save(any())).thenThrow(unexpectedException);
+        when(userRepository.save(any())).thenThrow(new RuntimeException("Error al crear el usuario"));
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             userDaoImpl.createUser(inputDto).blockingGet();
         });
 
-        assertEquals("Unexpected error", exception.getMessage());
+        assertTrue(exception.getMessage().contains("Error al crear el usuario"));
         verify(userDaoMapper).toUserEntity(inputDto);
         verify(userRepository).save(userEntity);
     }

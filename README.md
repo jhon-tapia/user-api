@@ -15,7 +15,28 @@ mvn spring-boot:run
 ```
 4. En caso se requiera desplegar el microservicio en Docker, ejecutar el archivo Dockerfile de la carpeta raiz.
 
+5. Ejecutar petición desde la consola de linux, git bash en windows o desde postman:
+``` shell
+curl --location 'http://localhost:8082/user/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"name": "Juan Rodriguez",
+"email": "juan@rodriguez.org",
+"password": "hunter2$Ab",
+"phones": [
+{
+"number": "987654321",
+"citycode": "1",
+"contrycode": "57"
+}
+]
+}'
+```
 
+6. Consultar openapi desde el link http://localhost:8082/swagger-ui/index.html, tambien es posible obtener la versión json ejecutando el request:
+``` shell
+curl --location 'http://localhost:8082/api-docs'
+```
 
 ## Validación en BD H2
 
@@ -24,6 +45,8 @@ mvn spring-boot:run
 
 
 ### DDL asociado al JPA:
+
+La creación de las tablas se realiza automáticamente al iniciar la aplicación por lo que no es necesario ejecutar un script de creación de BD. Sin embargo, se adjunta el script solo como referencia:
 
 ```sql
 CREATE TABLE "user"
